@@ -1,0 +1,29 @@
+# Visual Studio
+.vs/
+*.VC.db
+*.VC.opendb
+
+# Build folders
+build/
+bin/
+out/
+x64/
+x86/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+
+# Compiled files
+*.obj
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk
+
+# Precompiled headers
+*.ipch
+
+# Misc
+*.log

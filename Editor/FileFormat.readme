@@ -1,0 +1,60 @@
+This would be the file format of the new file
+.wrdx (World extended) - This is taken from original .wrld file format from FusionTech2
+
+[Header] - Unique header identifer;
+[BVH Compiled Collision Tree] - This would be the compilation collision tree for bounding box collision. This would be ok so far... 
+[Texture based Index grouping] - We could set a reference of indexes for similar textures. This could be referenced and grouped before being sent to the gpu
+[Visibility check] - Similar to pvs, a radial "chunk like" check is being executed. For each positional block, Store a chunk of blocks nearby. They are potentially being seen.
+
+//TODO, set position to world space. No Matrix!
+
+Vertex = {Position, Normal, UV, LightmapCoords}
+Faces = {VertexIndex[3], Indices, TextureFileDirectory, LightmapID}
+BVHNodes = {BoundPointerIndex, LeftNode, RightNode} -> This would be sterilised.
+
+Fusion Data File -> Replacement of .zip (.FDF)
+	-> Header = File version header
+	-> Hardcoded Lumps = Stores the amount of data found within the lumps. Would also iterate in order.
+		-> Lump order:
+			-> .FWRLD = World File, Stored similar to the data file found below
+			-> .FGI = Image File, stored similar to the data file found below
+			-> .FMD = Model data, stored similar to the data file found below
+			-> .FFS/FVS = Geometry shader file, found similar to the data found below
+		
+		->File Data = Store the files within the order.
+
+
+Fusion Shader File (Fusion Fragment Shader/Fusion Vertex Shader) -> Repalcement of .pdraw/.vdraw (.FFS, .FVS)
+	-> Header = File version header
+	-> Shader type = Byte to determine shader code
+	-> Instruction set = bytecode instruction set
+		-> Use opcode/operand, opcode for operation decleration, eg.
+
+Fusion World File -> Replacement of .wrdx (.FWLD)
+	-> Header = File version header
+	-> BlockVersion = Is the block static or dynamic
+	-> Vertices = Scene vertices from the scene.
+	-> Indices = Scene indices from the scene.
+
+	-> Block Index = Used for the BVH collision system.
+
+	-> Textures = This would be used textures and would be the texture name, using .FGI
+	-> Lightmap = This would be a lightmap compiler system. 
+
+Fusion Graphical Image -> Replacement of Imgbuf (.FGI)
+	-> Header = File version header
+	-> ImageType = Static, Animated
+	-> ImagePadding StartImage
+	-> ImageData = Actual image data;
+	-> ImagePadding EndImage;
+	-> ImageData ... If animated
+
+Fusion Model File -> Replacement of .gltf/.obj (.FMD)
+	-> Header = File version header
+	-> Keyframe -> Animation Frame -> Node Transform from skeleton.
+
+	-> Model Vertices = This would be floats using {Position, Normal and UV}
+	-> Model Indices = This would be vertices index for each triangle.
+	-> Model Matrix = This would be the translation, rotation and scale matrix (Wont be matrix, would be scale/position/rotation).
+	-> Model Texture = This would also produce a filename reference for the fusion graphics image.
+
